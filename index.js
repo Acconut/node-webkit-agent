@@ -1,5 +1,5 @@
 var agents = require('./lib');
-var spawn = require('child_process').spawn;
+var fork = require('child_process').fork;
 var WebSocketServer = require('ws').Server;
 
 /**
@@ -29,7 +29,7 @@ var DevToolsAgent = module.exports = function() {
         //Parent PID for the proxy to know to whom to send the SIGUSR1 signal
         process.env.PARENT_PID = process.pid;
 
-        this.proxy = spawn('node', process.argv.concat(__dirname + '/webkit-devtools-agent.js'), {
+        this.proxy = fork(__dirname + '/webkit-devtools-agent.js', process.argv, {
             env: process.env,
             cwd: __dirname
         });
